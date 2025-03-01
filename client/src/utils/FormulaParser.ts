@@ -2,27 +2,26 @@ class FormulaParser {
   private sheetData: string[][];
 
   constructor(sheetData: string[][]) {
-    this.sheetData = sheetData; // 2D array representing spreadsheet data
+    this.sheetData = sheetData; // Spreadsheet data (2D array)
   }
 
-  evaluateFormula(formula: string): string | number {
+  evaluateFormula(formula: string): number | string {
     try {
-      if (!formula.startsWith("=")) return formula; // Not a formula
+      if (!formula.startsWith("=")) return formula; // If not a formula, return as-is
+
       const expression = formula.substring(1); // Remove '='
       return this.evaluateExpression(expression);
     } catch (error) {
-      return "ERROR";
+      return "ERROR"; // Return error if something goes wrong
     }
   }
 
-  private evaluateExpression(expression: string): string | number {
-    const fnMatch = expression.match(
-      /(SUM|AVERAGE|MAX|MIN|COUNT|TRIM|UPPER|LOWER|FIND_AND_REPLACE)\((.*?)\)/
-    );
+  private evaluateExpression(expression: string): number | string {
+    const fnMatch = expression.match(/(SUM|AVERAGE|MAX|MIN|COUNT)\((.*?)\)/);
 
-    if (!fnMatch) return "ERROR";
+    if (!fnMatch) return "ERROR"; // If formula is invalid
 
-    const fnName = fnMatch[1];
+    const fnName = fnMatch[1]; // Extract function name
     const args = fnMatch[2].split(",").map((arg) => arg.trim());
 
     switch (fnName) {
@@ -36,14 +35,6 @@ class FormulaParser {
         return this.min(args[0]);
       case "COUNT":
         return this.count(args[0]);
-      case "TRIM":
-        return args[0].trim();
-      case "UPPER":
-        return args[0].toUpperCase();
-      case "LOWER":
-        return args[0].toLowerCase();
-      case "FIND_AND_REPLACE":
-        return this.findAndReplace(args).join(", ");
       default:
         return "ERROR";
     }
@@ -85,12 +76,6 @@ class FormulaParser {
     return this.getRangeValues(range).length;
   }
 
-  private findAndReplace([range, findText, replaceText]: string[]): string[] {
-    return this.getRangeValues(range).map((val) =>
-      val === parseFloat(findText) ? replaceText : val.toString()
-    );
-  }
-
   private parseCell(cell: string): [number, number] {
     const col = cell.charCodeAt(0) - "A".charCodeAt(0);
     const row = parseInt(cell.slice(1), 10) - 1;
@@ -98,4 +83,5 @@ class FormulaParser {
   }
 }
 
+// ✅ Use ES Module Export
 export default FormulaParser;
