@@ -1,6 +1,6 @@
 const BASE_URL =
   process.env.NODE_ENV === "development"
-    ? "https://google-sheets-clone-zeta.vercel.app"
+    ? "http://localhost:5000"
     : "https://google-sheets-flax.vercel.app";
 
 export const USER_URL = `${BASE_URL}/api/user`;
