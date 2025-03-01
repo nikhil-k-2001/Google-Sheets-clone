@@ -40,7 +40,7 @@ export const debounce = <T>(
 
 export const getStaticUrl = (path: string) => {
   return `${
-    process.env.NODE_ENV === "production" ? "/" : ""
+    process.env.NODE_ENV === "production" ? "" : ""
   }${path}`;
 };
 
