@@ -40,13 +40,13 @@
 
 // export default Header;
 
+import { ChangeEvent } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import { useSheet } from "@/hooks/useSheet";
 import Avatar from "@/components/Avatar";
 import useTitle from "@/hooks/useTitle";
 import { debounce } from "@/utils";
-import ControlledInput from "@/components/ControlledInput"; // ✅ Import ControlledInput
 
 const Header = () => {
   const { user, logout } = useAuth();
@@ -54,8 +54,8 @@ const Header = () => {
 
   useTitle(sheetDetail?.title);
 
-  // ✅ Debounce input changes to avoid excessive updates
-  const handleChange = debounce((event: React.ChangeEvent<HTMLInputElement>) => {
+  // ✅ Debounce input changes to avoid excessive re-renders
+  const handleChange = debounce((event: ChangeEvent<HTMLInputElement>) => {
     handleTitleChange(event.target.value);
   }, 500);
 
@@ -65,9 +65,10 @@ const Header = () => {
         <Link to="/sheet/list">
           <img className="w-12 h-12 cursor-pointer" src="/logo.png" alt="Logo" />
         </Link>
-        {/* ✅ Use ControlledInput instead of contentEditable */}
-        <ControlledInput
+        {/* ✅ Replaced `contentEditable` with a controlled input */}
+        <input
           className="text-dark-gray font-medium text-lg w-fit outline outline-1 outline-transparent hover:outline-dark-gray rounded-sm focus:outline-2 focus:outline-dark-blue px-2"
+          type="text"
           value={sheetDetail?.title || ""}
           onChange={handleChange}
         />
@@ -78,8 +79,3 @@ const Header = () => {
 };
 
 export default Header;
-
-};
-
-export default Header;
-
