@@ -40,7 +40,7 @@
 
 // export default Header;
 
-import { ChangeEvent } from "react";
+import { ChangeEvent, useState } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import { useSheet } from "@/hooks/useSheet";
@@ -52,11 +52,20 @@ const Header = () => {
   const { user, logout } = useAuth();
   const { sheetDetail, handleTitleChange } = useSheet();
 
-  useTitle(sheetDetail?.title);
+  // ✅ Local state to handle instant changes while typing
+  const [title, setTitle] = useState(sheetDetail?.title || "");
 
-  // ✅ Debounce input changes to avoid excessive re-renders
-  const handleChange = debounce((event: ChangeEvent<HTMLInputElement>) => {
-    handleTitleChange(event.target.value);
+  useTitle(title);
+
+  // ✅ Update state instantly & debounce API update
+  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setTitle(event.target.value); // ✅ Update UI immediately
+    debouncedUpdate(event.target.value);
+  };
+
+  // ✅ Debounced function to update backend
+  const debouncedUpdate = debounce((newTitle: string) => {
+    handleTitleChange(newTitle);
   }, 500);
 
   return (
@@ -65,11 +74,11 @@ const Header = () => {
         <Link to="/sheet/list">
           <img className="w-12 h-12 cursor-pointer" src="/logo.png" alt="Logo" />
         </Link>
-        {/* ✅ Replaced `contentEditable` with a controlled input */}
+        {/* ✅ Controlled input with local state */}
         <input
           className="text-dark-gray font-medium text-lg w-fit outline outline-1 outline-transparent hover:outline-dark-gray rounded-sm focus:outline-2 focus:outline-dark-blue px-2"
           type="text"
-          value={sheetDetail?.title || ""}
+          value={title} // ✅ Uses local state for instant updates
           onChange={handleChange}
         />
       </div>
