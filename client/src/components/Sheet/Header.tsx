@@ -89,7 +89,8 @@ const Header = () => {
           ref={titleRef} // ✅ Attach ref
           className="text-dark-gray font-medium text-lg w-fit outline outline-1 outline-transparent hover:outline-dark-gray rounded-sm focus:outline-2 focus:outline-dark-blue px-2"
           dangerouslySetInnerHTML={{ __html: sheetDetail?.title || "" }}
-          onInput={handleChange}
+{/*           onInput={handleChange} */}
+          <input onChange={handleChange} >
           contentEditable
         ></div>
       </div>
