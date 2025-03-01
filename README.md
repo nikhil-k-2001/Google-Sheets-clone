@@ -58,9 +58,9 @@ Whether you're creating complex spreadsheets or simply experimenting with web te
 
 ## Demo
 
-![Google Sheets Clone Demo](https://via.placeholder.com/800x400?text=Google+Sheets+Clone+Demo)
+![Google Sheets Clone Demo](https://google-sheets-clone-one.vercel.app)
 
-*Click [here](#) for a live demo (if available).*
+
 
 ---
 
